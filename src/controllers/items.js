@@ -1,18 +1,12 @@
 const itemsModel = require('../models/items')
+const { response: standardResponse } = require('../helpers/standardResponse')
 
 exports.getItems = (req, res) => {
   itemsModel.getItems((err, results, _field) => {
     if (!err) {
-      return res.status(200).json({
-        success: true,
-        message: 'List of items',
-        results
-      })
+      return standardResponse(res, 200, true, 'List of item', results)
     } else {
-      return res.status(500).json({
-        success: false,
-        message: 'An error occured'
-      })
+      return standardResponse(res, 500, false, 'An error occured')
     }
   })
 }
@@ -23,22 +17,12 @@ exports.getDetailItem = (req, res) => {
   itemsModel.getItemById(id, (err, results, _field) => {
     if (!err) {
       if (results.length === 1) {
-        return res.status(200).json({
-          success: true,
-          message: 'Detail item',
-          results
-        })
+        return standardResponse(res, 200, true, 'Detail item', results)
       } else {
-        return res.status(404).json({
-          success: true,
-          message: 'Item not found'
-        })
+        return standardResponse(res, 404, false, 'Item not found')
       }
     } else {
-      return res.status(500).json({
-        success: false,
-        message: 'An error occured'
-      })
+      return standardResponse(res, 500, false, 'An error occured')
     }
   })
 }
@@ -47,15 +31,9 @@ exports.createItems = (req, res) => {
   const data = req.body
   itemsModel.createItem(data, (err, result, _field) => {
     if (!err) {
-      return res.status(200).json({
-        success: true,
-        message: 'Item has been created successfully'
-      })
+      return standardResponse(res, 200, true, 'Item has been created successfully')
     } else {
-      return res.status(500).json({
-        success: false,
-        message: 'An error occured'
-      })
+      return standardResponse(res, 500, false, 'An error occured')
     }
   })
 }
@@ -70,22 +48,13 @@ exports.updateItems = (req, res) => {
         const data = req.body
         itemsModel.updateItem(data, id, (err, results, _field) => {
           if (!err) {
-            return res.status(200).json({
-              success: true,
-              message: 'Item updated successully!'
-            })
+            return standardResponse(res, 200, true, 'Item updated successfully!')
           } else {
-            return res.status(500).json({
-              success: false,
-              message: 'An error occured'
-            })
+            return standardResponse(res, 500, false, 'An error occured')
           }
         })
       } else {
-        return res.status(404).json({
-          success: false,
-          message: 'Item not found!'
-        })
+        return standardResponse(res, 404, false, 'Item not found!')
       }
     }
   })
@@ -94,28 +63,20 @@ exports.updateItems = (req, res) => {
 exports.deleteItems = (req, res) => {
   const { id: stringId } = req.params
   const id = parseInt(stringId)
+
   itemsModel.getItemById(id, (err, results, _field) => {
     if (!err) {
       if (results.length > 0) {
         itemsModel.deleteItem(id, (err, results, _field) => {
           if (!err) {
-            return res.status(200).json({
-              success: true,
-              message: 'Item has been deleted!'
-            })
+            return standardResponse(res, 200, true, 'Item has been deleted!')
           } else {
-            return res.status(500).json({
-              success: false,
-              message: 'An error occured'
-            })
+            return standardResponse(res, 500, false, 'An error occured')
           }
         })
+      } else {
+        return standardResponse(res, 404, false, 'Item not found!')
       }
-    } else {
-      return res.status(404).json({
-        success: false,
-        message: 'Item not found!'
-      })
     }
   })
 }
