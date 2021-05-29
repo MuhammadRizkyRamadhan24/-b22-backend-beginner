@@ -15,9 +15,11 @@ app.get('/', (req, res) => {
 
 const itemRoute = require('./src/routes/items')
 const categoryRoute = require('./src/routes/categories')
+const variantRoute = require('./src/routes/variants')
 
 app.use('/items', itemRoute)
 app.use('/category', categoryRoute)
+app.use('/variant', variantRoute)
 
 app.listen(8880, () => {
   console.log('app running on port 8880')
