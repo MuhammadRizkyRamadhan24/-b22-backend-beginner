@@ -19,7 +19,7 @@ const variantRoute = require('./src/routes/variants')
 
 app.use('/items', itemRoute)
 app.use('/category', categoryRoute)
-app.use('/varian', variantRoute)
+app.use('/variant', variantRoute)
 
 app.listen(8880, () => {
   console.log('app running on port 8880')
