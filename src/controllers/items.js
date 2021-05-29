@@ -27,6 +27,26 @@ exports.getDetailItem = (req, res) => {
   })
 }
 
+exports.getSearchItems = (req, res) => {
+  const limit = parseInt(req.query.limit) || 8
+  const page = parseInt(req.query.page) || 1
+  const sort = req.query.sort || 'asc'
+  const order = req.query.order || 'created_at'
+  const search = `${req.query.search}%` || ''
+  itemsModel.getSearch(limit, page, sort, order, search, (err, results, _field) => {
+    console.log(err)
+    if (!err) {
+      if (results.length > 0) {
+        return standardResponse(res, 200, true, 'Search items', results)
+      } else {
+        return standardResponse(res, 404, false, 'Item not found', results)
+      }
+    } else {
+      return standardResponse(res, 500, false, 'An error occured')
+    }
+  })
+}
+
 exports.createItems = (req, res) => {
   const data = req.body
   itemsModel.createItem(data, (err, result, _field) => {
