@@ -34,12 +34,11 @@ exports.getSearchItems = (req, res) => {
   const order = req.query.order || 'created_at'
   const search = `${req.query.search}%` || ''
   itemsModel.getSearch(limit, page, sort, order, search, (err, results, _field) => {
-    console.log(err)
     if (!err) {
       if (results.length > 0) {
         return standardResponse(res, 200, true, 'Search items', results)
       } else {
-        return standardResponse(res, 404, false, 'Item not found', results)
+        return standardResponse(res, 404, false, 'Item not found')
       }
     } else {
       return standardResponse(res, 500, false, 'An error occured')
