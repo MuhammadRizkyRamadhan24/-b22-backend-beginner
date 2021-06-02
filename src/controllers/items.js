@@ -99,6 +99,8 @@ exports.deleteItems = (req, res) => {
       } else {
         return standardResponse(res, 404, false, 'Item not found!')
       }
+    } else {
+      return standardResponse(res, 500, false, 'An error occured')
     }
   })
 }
