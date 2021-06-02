@@ -33,7 +33,7 @@ exports.getSearchItems = (req, res) => {
   const page = parseInt(req.query.page) || 1
   const sort = req.query.sort || 'asc'
   const order = req.query.order || 'created_at'
-  const search = `${req.query.search}%` || ''
+  const search = `%${req.query.search}%` || ''
   itemsModel.getSearch(limit, page, sort, order, search, (err, results, _field) => {
     if (!err) {
       if (results.length > 0) {
