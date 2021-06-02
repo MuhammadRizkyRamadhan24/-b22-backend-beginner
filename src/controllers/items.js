@@ -17,7 +17,8 @@ exports.getDetailItem = (req, res) => {
   itemsModel.getItemById(id, (err, results, _field) => {
     if (!err) {
       if (results.length === 1) {
-        return standardResponse(res, 200, true, 'Detail item', results)
+        const result = results[0]
+        return standardResponse(res, 200, true, 'Detail item', result)
       } else {
         return standardResponse(res, 404, false, 'Item not found')
       }
