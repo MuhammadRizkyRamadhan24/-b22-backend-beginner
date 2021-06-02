@@ -4,7 +4,7 @@ const { response: standardResponse } = require('../helpers/standardResponse')
 exports.getVariants = (req, res) => {
   variantsModel.getVariants((err, results, _field) => {
     if (!err) {
-      return standardResponse(res, 200, true, 'List of item', results)
+      return standardResponse(res, 200, true, 'List of Variant', results)
     } else {
       return standardResponse(res, 500, false, 'An error occured')
     }
@@ -17,7 +17,7 @@ exports.getDetailVariant = (req, res) => {
   variantsModel.getVariantById(id, (err, results, _field) => {
     if (!err) {
       if (results.length === 1) {
-        return standardResponse(res, 200, true, 'Detail item', results)
+        return standardResponse(res, 200, true, 'Detail Variant', results)
       } else {
         return standardResponse(res, 404, false, 'Variant not found')
       }

@@ -4,7 +4,7 @@ const { response: standardResponse } = require('../helpers/standardResponse')
 exports.getCategories = (req, res) => {
   categoriesModel.getCategories((err, results, _field) => {
     if (!err) {
-      return standardResponse(res, 200, true, 'List of item', results)
+      return standardResponse(res, 200, true, 'List of Category', results)
     } else {
       return standardResponse(res, 500, false, 'An error occured')
     }
@@ -17,7 +17,7 @@ exports.getDetailCategory = (req, res) => {
   categoriesModel.getCategoryById(id, (err, results, _field) => {
     if (!err) {
       if (results.length === 1) {
-        return standardResponse(res, 200, true, 'Detail item', results)
+        return standardResponse(res, 200, true, 'Detail Category', results)
       } else {
         return standardResponse(res, 404, false, 'Category not found')
       }
