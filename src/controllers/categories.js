@@ -1,10 +1,23 @@
 const categoriesModel = require('../models/categories')
+const { getItemByCategory } = require('../models/items')
+
 const { response: standardResponse } = require('../helpers/standardResponse')
 
 exports.getCategories = (req, res) => {
   categoriesModel.getCategories((err, results, _field) => {
     if (!err) {
       return standardResponse(res, 200, true, 'List of Category', results)
+    } else {
+      return standardResponse(res, 500, false, 'An error occured')
+    }
+  })
+}
+
+exports.getItemByCategory = (req, res) => {
+  const { id } = req.params
+  getItemByCategory(id, (err, results, _fields) => {
+    if (!err) {
+      return standardResponse(res, 200, true, 'List Items by Category', results)
     } else {
       return standardResponse(res, 500, false, 'An error occured')
     }
