@@ -1,9 +1,20 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
+const cors = require('cors')
+// const xssFilter = require('x-xss-protection')
+
+// const corsHelper = require('./src/helpers/cors')
+
 require('dotenv').config()
 
 const app = express()
+
+// CORS
+const whitelist = ['http://localhost:3000', 'https://localhost:3000']
+app.use(cors(whitelist))
+// app.options('*', cors(corsHelper.corsOptions))
+// app.use(xssFilter())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
