@@ -2,6 +2,7 @@ const itemsModel = require('../models/items')
 const { createItemCategory } = require('../models/itemsCategories')
 const { createItemVariant } = require('../models/itemsVariants')
 const { response: standardResponse } = require('../helpers/standardResponse')
+
 exports.getItems = (req, res) => {
   itemsModel.getItems((err, results, _field) => {
     if (!err) {
@@ -65,6 +66,7 @@ exports.getSearchItems = (req, res) => {
         return standardResponse(res, 404, false, 'Item not found')
       }
     } else {
+      console.log(err)
       return standardResponse(res, 500, false, 'An error occured')
     }
   })
