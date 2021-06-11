@@ -1,6 +1,6 @@
 const itemsModel = require('../models/items')
-const { createItemCategory } = require('../models/itemsCategories')
-const { createItemVariant } = require('../models/itemsVariants')
+const { createItemCategory, deleteItemCategory, getItemCategoryByIdItems } = require('../models/itemsCategories')
+const { createItemVariant, deleteItemVariant, getItemVariantByIdItems } = require('../models/itemsVariants')
 const { response: standardResponse } = require('../helpers/standardResponse')
 
 exports.getItems = (req, res) => {
@@ -26,23 +26,42 @@ exports.getDetailItem = (req, res) => {
           base_price: '',
           delivery: '',
           quantity: '',
+          categories: [],
           variants: [],
           created_at: '',
           updated_at: '',
           ...results[0]
         }
-        const hiddenColumn = ['id_variant', 'additional_price', 'end_price', 'variant']
+
+        const hiddenColumn = ['id_item_variant', 'additional_price', 'end_price', 'variant']
         hiddenColumn.forEach(column => {
           delete data[column]
         })
         results.forEach(item => {
           data.variants.push({
-            id: item.id_variant,
+            id: item.id_item_variant,
             variant: item.variant,
             price: item.end_price
           })
         })
-        return standardResponse(res, 200, true, 'Detail of item by id', data)
+
+        itemsModel.getItemCategory(id, (err, results) => {
+          if (!err) {
+            if (results.length > 0) {
+              results.forEach(item => {
+                data.categories.push({
+                  id: item.id_item_category,
+                  category: item.category
+                })
+              })
+              return standardResponse(res, 200, true, 'Detail of item by id', data)
+            } else {
+              return standardResponse(res, 404, false, 'Category not found')
+            }
+          } else {
+            return standardResponse(res, 500, false, `Error: ${err.sqlMessage}`)
+          }
+        })
       } else {
         return standardResponse(res, 404, false, 'Item not found')
       }
@@ -159,9 +178,29 @@ exports.deleteItems = (req, res) => {
   const { id: stringId } = req.params
   const id = parseInt(stringId)
 
-  itemsModel.getItemById(id, (err, results, _field) => {
+  itemsModel.getItemDetail(id, (err, results, _field) => {
     if (!err) {
       if (results.length > 0) {
+        getItemCategoryByIdItems(id, (err, results) => {
+          if (!err) {
+            if (results.length > 0) {
+              deleteItemCategory(id, () => {
+                console.log(`Items Category by id_items ${id} has been delete `)
+              })
+            }
+          }
+        })
+
+        getItemVariantByIdItems(id, (err, results) => {
+          if (!err) {
+            if (results.length > 0) {
+              deleteItemVariant(id, () => {
+                console.log(`Items Variant by id_items ${id} has been delete `)
+              })
+            }
+          }
+        })
+
         itemsModel.deleteItem(id, (err, results, _field) => {
           if (!err) {
             return standardResponse(res, 200, true, 'Item has been deleted!')

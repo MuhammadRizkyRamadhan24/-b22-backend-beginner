@@ -35,5 +35,9 @@ exports.getSearch = (limit, page, sort, order, search, cb) => {
 }
 
 exports.getItemDetail = (id, cb) => {
-  db.query('SELECT items.id, items.name, items.image, items.price AS base_price, items_variants.id AS id_variant, items_variants.additional_price, (items.price + items_variants.additional_price) AS end_price, items.delivery, items.detail, items.quantity, variants.name_variant AS variant, items.created_at, items.updated_at FROM items INNER JOIN items_variants ON items_variants.id_items = items.id INNER JOIN variants ON items_variants.id_variants = variants.id WHERE items.id = ?', [id], cb)
+  db.query('SELECT items.id, items.name, items.image, items.price AS base_price, items_variants.id AS id_item_variant, items_variants.additional_price, (items.price + items_variants.additional_price) AS end_price, items.delivery, items.detail, items.quantity, variants.name_variant AS variant, items.created_at, items.updated_at FROM items INNER JOIN items_variants ON items_variants.id_items = items.id INNER JOIN variants ON items_variants.id_variants = variants.id WHERE items.id = ?', [id], cb)
+}
+
+exports.getItemCategory = (id, cb) => {
+  db.query('SELECT items_categories.id AS id_item_category, categories.name_category AS category FROM items INNER JOIN items_categories ON items_categories.id_items = items.id INNER JOIN categories ON items_categories.id_category = categories.id WHERE items.id = 8', [id], cb)
 }
