@@ -13,8 +13,6 @@ const app = express()
 // CORS
 const whitelist = ['http://localhost:3000', 'https://localhost:3000']
 app.use(cors(whitelist))
-// app.options('*', cors(corsHelper.corsOptions))
-// app.use(xssFilter())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -29,11 +27,15 @@ app.get('/', (req, res) => {
 const itemRoute = require('./src/routes/items')
 const categoryRoute = require('./src/routes/categories')
 const variantRoute = require('./src/routes/variants')
+const itemsCategoriesRoute = require('./src/routes/itemsCategories')
+const itemsVariantsRoute = require('./src/routes/itemsVariants')
 
 app.use('/static', express.static(path.join(__dirname, 'src/public')))
 app.use('/items', itemRoute)
 app.use('/category', categoryRoute)
 app.use('/variant', variantRoute)
+app.use('/itemscategories', itemsCategoriesRoute)
+app.use('/itemsvariants', itemsVariantsRoute)
 
 app.listen(8880, () => {
   console.log('app running on port 8880')
