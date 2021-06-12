@@ -3,6 +3,8 @@ const { createItemCategory, deleteItemCategory, getItemCategoryByIdItems } = req
 const { createItemVariant, deleteItemVariant, getItemVariantByIdItems } = require('../models/itemsVariants')
 const { response: standardResponse } = require('../helpers/standardResponse')
 
+const { APP_URL } = process.env
+
 exports.getItems = (req, res) => {
   itemsModel.getItems((err, results, _field) => {
     if (!err) {
@@ -77,10 +79,30 @@ exports.getSearchItems = (req, res) => {
   const sort = req.query.sort || 'asc'
   const order = req.query.order || 'created_at'
   const search = `%${req.query.search}%` || ''
+
+  const pageInfo = {}
   itemsModel.getSearch(limit, page, sort, order, search, (err, results, _field) => {
     if (!err) {
       if (results.length > 0) {
-        return standardResponse(res, 200, true, 'Search items', results)
+        const data = [...results]
+        data.forEach(items => {
+          delete items.detail
+        })
+        itemsModel.getItemsCount(search, (err, resultCount, _fields) => {
+          if (!err) {
+            const totalData = resultCount[0].count
+            const lastPage = Math.ceil(totalData / limit)
+            pageInfo.totalData = totalData
+            pageInfo.currentPage = page
+            pageInfo.lastPage = lastPage
+            pageInfo.limitData = limit
+            pageInfo.nextPage = page < lastPage ? `${APP_URL}/items/search?search=${req.query.search}&page=${page + 1}` : null
+            pageInfo.prevPage = page > 1 ? `${APP_URL}/items/search?search=${req.query.search}&page=${page - 1}` : null
+            return standardResponse(res, 200, true, 'Search items', data, pageInfo)
+          } else {
+            console.log(err)
+          }
+        })
       } else {
         return standardResponse(res, 404, false, 'Item not found')
       }
