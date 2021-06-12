@@ -29,9 +29,14 @@ exports.getItemByCategory = (id, cb) => {
   db.query('SELECT items.id, items.name, items.image, items.price FROM items left JOIN items_categories on items_categories.id_items = items.id WHERE items_categories.id_category = ?', [id], cb)
 }
 
+// exports.getSearch = (limit, page, sort, order, search, cb) => {
+//   const offset = (limit * page) - limit
+//   db.query(`SELECT items.id, items.name, items.image, items.price, items.detail, categories.name_category FROM items LEFT JOIN items_categories on items_categories.id_items = items.id INNER JOIN categories on categories.id = items_categories.id_category WHERE items.name LIKE ? OR items.detail LIKE ? OR categories.name_category LIKE ? ORDER BY items.${order} ${sort} LIMIT ? OFFSET ?`, [search, search, search, limit, offset], cb)
+// }
+
 exports.getSearch = (limit, page, sort, order, search, cb) => {
   const offset = (limit * page) - limit
-  db.query(`SELECT items.id, items.name, items.image, items.price, items.detail, categories.name_category FROM items LEFT JOIN items_categories on items_categories.id_items = items.id INNER JOIN categories on categories.id = items_categories.id_category WHERE items.name LIKE ? OR items.detail LIKE ? OR categories.name_category LIKE ? ORDER BY items.${order} ${sort} LIMIT ? OFFSET ?`, [search, search, search, limit, offset], cb)
+  db.query(`SELECT items.id, items.name, items.image, items.price, items.detail FROM items WHERE items.name LIKE ? OR items.detail LIKE ? ORDER BY items.${order} ${sort} LIMIT ? OFFSET ?`, [search, search, limit, offset], cb)
 }
 
 exports.getItemDetail = (id, cb) => {
@@ -40,4 +45,8 @@ exports.getItemDetail = (id, cb) => {
 
 exports.getItemCategory = (id, cb) => {
   db.query('SELECT items_categories.id AS id_item_category, categories.name_category AS category FROM items INNER JOIN items_categories ON items_categories.id_items = items.id INNER JOIN categories ON items_categories.id_category = categories.id WHERE items.id = 8', [id], cb)
+}
+
+exports.getItemsCount = (search, cb) => {
+  db.query('SELECT COUNT(items.id) as count FROM items WHERE items.name LIKE ? OR items.detail LIKE ?', [search, search], cb)
 }
