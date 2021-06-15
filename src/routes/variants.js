@@ -1,10 +1,11 @@
 const route = require('express').Router()
 const variantController = require('../controllers/variants')
+const { auth, admin, user } = require('../middlewares/auth')
 
-route.get('/', variantController.getVariants)
-route.post('/', variantController.createVariants)
-route.get('/:id', variantController.getDetailVariant)
-route.put('/:id', variantController.updateVariants)
-route.delete('/:id', variantController.deleteVariants)
+route.get('/', auth, user, variantController.getVariants)
+route.post('/', auth, admin, variantController.createVariants)
+route.get('/:id', auth, user, variantController.getDetailVariant)
+route.put('/:id', auth, admin, variantController.updateVariants)
+route.delete('/:id', auth, admin, variantController.deleteVariants)
 
 module.exports = route
