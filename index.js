@@ -2,9 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 const cors = require('cors')
-// const xssFilter = require('x-xss-protection')
-
-// const corsHelper = require('./src/helpers/cors')
 
 require('dotenv').config()
 
@@ -39,6 +36,6 @@ app.use('/itemscategories', itemsCategoriesRoute)
 app.use('/itemsvariants', itemsVariantsRoute)
 app.use('/auth', authRoute)
 
-app.listen(8880, () => {
-  console.log('app running on port 8880')
+app.listen(process.env.APP_PORT, () => {
+  console.log(`app running on port ${process.env.APP_PORT}`)
 })
