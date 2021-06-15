@@ -1,4 +1,7 @@
 const itemsModel = require('../models/items')
+const fs = require('fs')
+const path = './src/public/images'
+
 const { createItemCategory, deleteItemCategory, getItemCategoryByIdItems } = require('../models/itemsCategories')
 const { createItemVariant, deleteItemVariant, getItemVariantByIdItems } = require('../models/itemsVariants')
 const { response: standardResponse } = require('../helpers/standardResponse')
@@ -114,25 +117,27 @@ exports.getSearchItems = (req, res) => {
 }
 
 exports.createItems = (req, res) => {
-  itemsModel.createItem(req.body, (err, results, _field) => {
+  const setData = req.body
+  setData.image = req.file.filename
+  itemsModel.createItem(setData, (err, results, _field) => {
     if (!err) {
       if (results.affectedRows > 0) {
-        if (req.body.variant.length === 1) {
+        if (setData.variant.length === 1) {
           const data = {
             id_items: results.insertId,
-            id_variants: req.body.variant,
-            additional_price: req.body.additional_price
+            id_variants: setData.variant,
+            additional_price: setData.additional_price
           }
 
           createItemVariant(data, () => {
             console.log(`Items ${results.insertId} added to variant ${data.id_variants}`)
           })
         } else {
-          const itemsVariant = req.body.variant.map((d, i) => {
+          const itemsVariant = setData.variant.map((d, i) => {
             const data = {
               id_items: results.insertId,
               id_variants: d,
-              additional_price: req.body.additional_price[i]
+              additional_price: setData.additional_price[i]
             }
             return data
           })
@@ -149,10 +154,10 @@ exports.createItems = (req, res) => {
           })
         }
 
-        if (typeof req.body.category !== 'object') {
-          req.body.category = [req.body.category]
+        if (typeof setData.category !== 'object') {
+          setData.category = [setData.category]
         }
-        req.body.category.forEach(idCategory => {
+        setData.category.forEach(idCategory => {
           const data = {
             id_items: results.insertId,
             id_category: idCategory
@@ -179,11 +184,19 @@ exports.updateItems = (req, res) => {
   itemsModel.getItemById(id, (err, results, _field) => {
     if (!err) {
       if (results.length > 0) {
+        const oldData = results
         const data = req.body
-        itemsModel.updateItem(data, id, (err, results, _field) => {
+        data.image = req.file.filename
+        const setData = {
+          ...data,
+          image: req.file.filename
+        }
+        itemsModel.updateItem(setData, id, (err, results, _field) => {
           if (!err) {
+            fs.unlinkSync(path + '/' + oldData[0].image)
             return standardResponse(res, 200, true, 'Item updated successfully!')
           } else {
+            fs.unlinkSync(path + '/' + req.file.filename)
             return standardResponse(res, 500, false, 'An error occured')
           }
         })
@@ -223,12 +236,17 @@ exports.deleteItems = (req, res) => {
           }
         })
 
-        itemsModel.deleteItem(id, (err, results, _field) => {
-          if (!err) {
-            return standardResponse(res, 200, true, 'Item has been deleted!')
-          } else {
-            return standardResponse(res, 500, false, 'An error occured')
-          }
+        itemsModel.getItemById(id, (err, results, _field) => {
+          if (err) throw err
+          const oldData = results
+          itemsModel.deleteItem(id, (err, results, _field) => {
+            if (!err) {
+              fs.unlinkSync(path + '/' + oldData[0].image)
+              return standardResponse(res, 200, true, 'Item has been deleted!')
+            } else {
+              return standardResponse(res, 500, false, 'An error occured')
+            }
+          })
         })
       } else {
         return standardResponse(res, 404, false, 'Item not found!')
