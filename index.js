@@ -29,6 +29,7 @@ const categoryRoute = require('./src/routes/categories')
 const variantRoute = require('./src/routes/variants')
 const itemsCategoriesRoute = require('./src/routes/itemsCategories')
 const itemsVariantsRoute = require('./src/routes/itemsVariants')
+const authRoute = require('./src/routes/auth')
 
 app.use('/static', express.static(path.join(__dirname, 'src/public')))
 app.use('/items', itemRoute)
@@ -36,6 +37,7 @@ app.use('/category', categoryRoute)
 app.use('/variant', variantRoute)
 app.use('/itemscategories', itemsCategoriesRoute)
 app.use('/itemsvariants', itemsVariantsRoute)
+app.use('/auth', authRoute)
 
 app.listen(8880, () => {
   console.log('app running on port 8880')
