@@ -23,26 +23,18 @@ exports.auth = (req, res, next) => {
 
 exports.admin = (req, res, next) => {
   const role = req.authUser.position
-  if (role) {
-    if (role === 1) {
-      next()
-    } else {
-      return standardResponse(res, 401, false, 'You Not Allowed!')
-    }
+  if (role === 1) {
+    next()
   } else {
-    return standardResponse(res, 401, false, 'You Not Admin or User!')
+    return standardResponse(res, 401, false, 'You Not Allowed!')
   }
 }
 
 exports.user = (req, res, next) => {
   const role = req.authUser.position
-  if (role) {
-    if (role === 1 || role === 0) {
-      next()
-    } else {
-      return standardResponse(res, 401, false, 'You Not Allowed!')
-    }
+  if (role === 1 || role === 0) {
+    next()
   } else {
-    return standardResponse(res, 401, false, 'You Not Admin or User!')
+    return standardResponse(res, 401, false, 'You Not Allowed!')
   }
 }
