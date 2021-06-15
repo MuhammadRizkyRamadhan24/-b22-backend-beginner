@@ -6,9 +6,9 @@ const uploadImage = upload.single('image')
 
 route.get('/', auth, user, itemController.getItems)
 route.get('/search', auth, user, itemController.getSearchItems)
-route.post('/', uploadImage, admin, itemController.createItems)
-route.get('/:id', user, itemController.getDetailItem)
-route.put('/:id', uploadImage, admin, itemController.updateItems)
-route.delete('/:id', admin, itemController.deleteItems)
+route.post('/', uploadImage, auth, admin, itemController.createItems)
+route.get('/:id', auth, user, itemController.getDetailItem)
+route.put('/:id', uploadImage, auth, admin, itemController.updateItems)
+route.delete('/:id', auth, admin, itemController.deleteItems)
 
 module.exports = route
