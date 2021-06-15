@@ -4,12 +4,12 @@ const table = 'users'
 
 exports.createUser = (data, cb) => {
   db.query(`
-  INSERT INTO ${table} (email, phone_number, password) VALUES (?, ?, ?)
+  INSERT INTO ${table} (email, phone_number, position, password) VALUES (?, ?, ?, ?)
   `, [data.email, data.phone_number, data.password], cb)
 }
 
 exports.getUserByEmail = (email, cb) => {
   db.query(`
-  SELECT email, password FROM ${table} WHERE email = ?
+  SELECT email, password, position FROM ${table} WHERE email = ?
   `, [email], cb)
 }
