@@ -1,6 +1,5 @@
 #dependencies
 /node_modules
-/src/public/images
 /.eslintrc.js
 /.editorconfig
 /.env
