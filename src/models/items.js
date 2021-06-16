@@ -1,7 +1,8 @@
 const db = require('../helpers/db')
 
 exports.getItems = (cb) => {
-  db.query('SELECT items.id, items.name, items.image, items.price, items.detail, categories.name_category FROM items LEFT JOIN items_categories on items_categories.id_items = items.id INNER JOIN categories on categories.id = items_categories.id_category', cb)
+  // db.query('SELECT items.id, items.name, items.image, items.price, items.detail, categories.name_category FROM items LEFT JOIN items_categories on items_categories.id_items = items.id INNER JOIN categories on categories.id = items_categories.id_category', cb)
+  db.query('SELECT items.id, items.name, items.image, items.price, items.detail FROM items', cb)
 }
 
 exports.getItemById = (id, cb) => {
@@ -25,8 +26,9 @@ exports.getItemByCategory = (id, cb) => {
 }
 
 exports.getSearch = (limit, page, sort, order, search, cb) => {
+  const newSearch = `%${search}%`
   const offset = (limit * page) - limit
-  db.query(`SELECT items.id, items.name, items.image, items.price, items.detail FROM items WHERE items.name LIKE ? OR items.detail LIKE ? ORDER BY items.${order} ${sort} LIMIT ? OFFSET ?`, [search, search, limit, offset], cb)
+  db.query(`SELECT items.id, items.name, items.image, items.price, items.detail FROM items WHERE items.name LIKE ? OR items.detail LIKE ? ORDER BY items.${order} ${sort} LIMIT ? OFFSET ?`, [newSearch, newSearch, limit, offset], cb)
 }
 
 exports.getItemDetail = (id, cb) => {
@@ -39,4 +41,8 @@ exports.getItemCategory = (id, cb) => {
 
 exports.getItemsCount = (search, cb) => {
   db.query('SELECT COUNT(items.id) as count FROM items WHERE items.name LIKE ? OR items.detail LIKE ?', [search, search], cb)
+}
+
+exports.getItemsById = (id, cb) => {
+  db.query('SELECT id, name, price FROM items WHERE id IN (?)', [id], cb)
 }

@@ -81,8 +81,7 @@ exports.getSearchItems = (req, res) => {
   const page = parseInt(req.query.page) || 1
   const sort = req.query.sort || 'asc'
   const order = req.query.order || 'created_at'
-  const search = `%${req.query.search}%` || ''
-
+  const search = req.query.search || ''
   const pageInfo = {}
   itemsModel.getSearch(limit, page, sort, order, search, (err, results, _field) => {
     if (!err) {
@@ -103,14 +102,13 @@ exports.getSearchItems = (req, res) => {
             pageInfo.prevPage = page > 1 ? `${APP_URL}/items/search?search=${req.query.search}&page=${page - 1}` : null
             return standardResponse(res, 200, true, 'Search items', data, pageInfo)
           } else {
-            console.log(err)
+            return standardResponse(res, 500, false, 'An error occured')
           }
         })
       } else {
         return standardResponse(res, 404, false, 'Item not found')
       }
     } else {
-      console.log(err)
       return standardResponse(res, 500, false, 'An error occured')
     }
   })
@@ -186,15 +184,34 @@ exports.updateItems = (req, res) => {
       if (results.length > 0) {
         const oldData = results
         const data = req.body
-        data.image = req.file.filename
-        const setData = {
-          ...data,
-          image: req.file.filename
+        // console.log(req.file)
+        const setData = []
+        if (req.file === undefined) {
+          setData.push(data)
+        } else {
+          data.image = req.file.filename
+          setData.push(data)
         }
-        itemsModel.updateItem(setData, id, (err, results, _field) => {
+        console.log(setData[0])
+        // data.image = req.file.filename
+        // const setData = {
+        //   ...data,
+        //   image: req.file.filename
+        // }
+        // if (req.file === undefined) {
+        //   delete setData.image
+        //   console.log(setData)
+        // }
+
+        itemsModel.updateItem(setData[0], id, (err, results, _field) => {
           if (!err) {
-            fs.unlinkSync(path + '/' + oldData[0].image)
-            return standardResponse(res, 200, true, 'Item updated successfully!')
+            console.log(setData[0].image)
+            if (setData[0].image === undefined) {
+              return standardResponse(res, 200, true, 'Item updated successfully!')
+            } else {
+              fs.unlinkSync(path + '/' + oldData[0].image)
+              return standardResponse(res, 200, true, 'Item updated successfully!')
+            }
           } else {
             fs.unlinkSync(path + '/' + req.file.filename)
             return standardResponse(res, 500, false, 'An error occured')
