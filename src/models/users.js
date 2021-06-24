@@ -10,13 +10,19 @@ exports.createUser = (data, cb) => {
 
 exports.getUserByEmail = (email, cb) => {
   db.query(`
-  SELECT id, email, password, address, position FROM ${table} WHERE email = ?
+  SELECT id, email, phone_number, image, password, address, position FROM ${table} WHERE email = ?
+  `, [email], cb)
+}
+
+exports.getUserByIdUser = (email, cb) => {
+  db.query(`
+  SELECT * FROM ${table} WHERE id = ?
   `, [email], cb)
 }
 
 exports.getUserById = (id, cb) => {
   db.query(`
-  SELECT id, email, image, address FROM ${table} WHERE id = ?
+  SELECT id, email, phone_number, image, address FROM ${table} WHERE id = ?
   `, [id], cb)
 }
 

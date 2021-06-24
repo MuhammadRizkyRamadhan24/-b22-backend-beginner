@@ -17,3 +17,21 @@ exports.getTransactionByIdUser = (id, cb) => {
     SELECT * FROM transactions WHERE id_user = ?
   `, [id], cb)
 }
+
+exports.getTransactionById = (id, cb) => {
+  db.query(`
+    SELECT * FROM transactions WHERE id = ?
+  `, [id], cb)
+}
+
+exports.getDetailTransactionByCode = (id, cb) => {
+  db.query(`
+  SELECT transactions.id, transactions.code, transactions.total, transactions.tax, transactions.shipping_cost, transactions.shipping_address, transactions.payment_method, item_transactions.id AS item_id, item_transactions.name AS item_name, item_transactions.price, item_transactions.variants AS variant, item_transactions.amount, items.image FROM transactions INNER JOIN item_transactions ON item_transactions.id_transaction = transactions.id INNER JOIN items ON items.id = item_transactions.id_item WHERE transactions.id = ?
+  `, [id], cb)
+}
+
+exports.deleteTransactionById = (id, cb) => {
+  db.query(`
+  DELETE FROM transactions WHERE id = ?
+  `, [id], cb)
+}

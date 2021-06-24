@@ -1,15 +1,18 @@
-const { getUserById, getUserPassById, updateUser } = require('../models/users')
+const { getUserById, getUserPassById, updateUser, getUserByIdUser } = require('../models/users')
 const { response: standardResponse } = require('../helpers/standardResponse')
 const bcrypt = require('bcrypt')
 const fs = require('fs')
 const path = './src/public/images'
 
 exports.getUserById = (req, res) => {
-  const { id } = req.params
-  getUserById(id, (err, results, _fields) => {
-    if (err) throw err
+  const id = req.authUser.id
+  getUserByIdUser(id, (err, results, _fields) => {
+    const data = {
+      ...results
+    }
+    delete data[0].password
     if (!err) {
-      return standardResponse(res, 200, true, 'List User by Id', results)
+      return standardResponse(res, 200, true, 'List User by Id User', data)
     } else {
       return standardResponse(res, 500, false, 'An error occured')
     }
@@ -17,9 +20,7 @@ exports.getUserById = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-  const { id: stringId } = req.params
-  const id = parseInt(stringId)
-
+  const id = req.authUser.id
   getUserById(id, (err, results, _field) => {
     if (!err) {
       if (results.length > 0) {
@@ -32,12 +33,14 @@ exports.updateUser = (req, res) => {
           data.image = req.file.filename
           setData.push(data)
         }
-        console.log(setData[0])
+        console.log(setData[0].image)
         updateUser(setData[0], id, (err, results, _field) => {
           if (!err) {
-            if (setData[0].image === undefined) {
+            if (oldData[0].image === null) {
+              console.log('kaga')
               return standardResponse(res, 200, true, 'User updated successfully!')
             } else {
+              console.log('hapus')
               fs.unlinkSync(path + '/' + oldData[0].image)
               return standardResponse(res, 200, true, 'User updated successfully!')
             }
@@ -56,7 +59,7 @@ exports.updateUser = (req, res) => {
 }
 
 exports.updatePass = (req, res) => {
-  const { id } = req.params
+  const id = req.authUser.id
   const { password, newPassword } = req.body
   getUserPassById(id, async (err, results) => {
     if (err) throw err
