@@ -92,6 +92,7 @@ exports.getSearchItems = (req, res) => {
         })
         itemsModel.getItemsCount(search, (err, resultCount, _fields) => {
           if (!err) {
+            console.log(resultCount)
             const totalData = resultCount[0].count
             const lastPage = Math.ceil(totalData / limit)
             pageInfo.totalData = totalData

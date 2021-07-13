@@ -2,8 +2,8 @@ const db = require('../helpers/db')
 
 exports.createTransaction = (data, cb) => {
   db.query(`
-    INSERT INTO transactions (code, total, tax, shipping_cost, shipping_address, payment_method, id_user) VALUES (?,?,?,?,?,?,?)
-  `, [data.code, data.total, data.tax, data.shippingCost, data.shippingAddress, data.paymentMethod, data.idUser], cb)
+    INSERT INTO transactions (code, total, tax, shipping_cost, shipping_address, delivery_method, payment_method, id_user) VALUES (?,?,?,?,?,?,?,?)
+  `, [data.code, data.total, data.tax, data.shippingCost, data.shippingAddress, data.deliveryMethod, data.paymentMethod, data.idUser], cb)
 }
 
 exports.createItemTransaction = (data, cb) => {

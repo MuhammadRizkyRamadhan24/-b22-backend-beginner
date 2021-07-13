@@ -40,7 +40,8 @@ exports.getItemCategory = (id, cb) => {
 }
 
 exports.getItemsCount = (search, cb) => {
-  db.query('SELECT COUNT(items.id) as count FROM items WHERE items.name LIKE ? OR items.detail LIKE ?', [search, search], cb)
+  const newSearch = `%${search}%`
+  db.query('SELECT COUNT(items.id) as count FROM items WHERE items.name LIKE ? OR items.detail LIKE ?', [newSearch, newSearch], cb)
 }
 
 exports.getItemsById = (id, cb) => {

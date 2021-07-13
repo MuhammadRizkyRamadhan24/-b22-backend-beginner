@@ -61,19 +61,18 @@ exports.createTransactions = (req, res) => {
     data.item_variant = [data.item_variant]
     data.item_additional_price = [data.item_additional_price]
   }
-  const additionalPrice = data.item_additional_price.map(elem => parseInt(elem))
   console.log(data)
+  const additionalPrice = data.item_additional_price.map(elem => parseInt(elem))
   getItemsById(data.item_id.map(id => parseInt(id)), (err, items) => {
-    // console.log(items)
     if (err) throw err
     const idUser = req.authUser.id
     const code = codeTransaction(APP_TRANSACTION_PREFIX, idUser)
     const subTotal = items.map((item, idx) => (item.price + additionalPrice[idx]) * data.item_amount[idx]).reduce((acc, curr) => acc + curr)
     const tax = subTotal * 10 / 100
     const shippingCost = 10000
+    const deliveryMethod = data.delivery_method
     const paymentMethod = data.payment_method
     const total = subTotal + tax + shippingCost
-    console.log(total, 'hehe')
     getUserById(idUser, (err, results) => {
       if (err) throw err
       const shippingAddress = results[0].address
@@ -81,11 +80,12 @@ exports.createTransactions = (req, res) => {
         return response(res, 400, false, 'Address must be provided!')
       }
       const setData = {
-        code, total, tax, shippingCost, shippingAddress, paymentMethod, idUser
+        code, total, tax, shippingCost, shippingAddress, deliveryMethod, paymentMethod, idUser
       }
       createTransaction(setData, (err, results) => {
         if (err) throw err
         items.forEach((item, idx) => {
+          console.log(item)
           const setData = {
             name: item.name,
             price: item.price + additionalPrice[idx],

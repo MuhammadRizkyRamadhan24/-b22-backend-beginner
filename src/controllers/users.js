@@ -36,7 +36,7 @@ exports.updateUser = (req, res) => {
         console.log(setData[0].image)
         updateUser(setData[0], id, (err, results, _field) => {
           if (!err) {
-            if (oldData[0].image === null) {
+            if (oldData[0].image === null || setData[0].image === undefined) {
               console.log('kaga')
               return standardResponse(res, 200, true, 'User updated successfully!')
             } else {
