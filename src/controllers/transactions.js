@@ -70,7 +70,7 @@ exports.createTransactions = (req, res) => {
     const subTotal = items.map((item, idx) => (item.price + additionalPrice[idx]) * data.item_amount[idx]).reduce((acc, curr) => acc + curr)
     const tax = subTotal * 10 / 100
     const shippingCost = 10000
-    const deliveryMethod = data.delivery_method
+    const deliveryMethod = data.delivery_method || 'Dine in'
     const paymentMethod = data.payment_method
     const total = subTotal + tax + shippingCost
     getUserById(idUser, (err, results) => {
