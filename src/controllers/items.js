@@ -99,8 +99,8 @@ exports.getSearchItems = (req, res) => {
             pageInfo.currentPage = page
             pageInfo.lastPage = lastPage
             pageInfo.limitData = limit
-            pageInfo.nextPage = page < lastPage ? `${APP_URL}/items/search?search=${req.query.search}&page=${page + 1}` : null
-            pageInfo.prevPage = page > 1 ? `${APP_URL}/items/search?search=${req.query.search}&page=${page - 1}` : null
+            pageInfo.nextPage = page < lastPage ? `${APP_URL}/items?search=${req.query.search}&order=${order}&sort=${sort}&page=${page + 1}` : null
+            pageInfo.prevPage = page > 1 ? `${APP_URL}/items?search=${req.query.search}&order=${order}&sort=${sort}&page=${page - 1}` : null
             return standardResponse(res, 200, true, 'Search items', data, pageInfo)
           } else {
             return standardResponse(res, 500, false, 'An error occured')

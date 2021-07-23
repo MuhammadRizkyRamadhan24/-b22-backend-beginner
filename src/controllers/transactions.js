@@ -61,7 +61,6 @@ exports.createTransactions = (req, res) => {
     data.item_variant = [data.item_variant]
     data.item_additional_price = [data.item_additional_price]
   }
-  console.log(data)
   const additionalPrice = data.item_additional_price.map(elem => parseInt(elem))
   getItemsById(data.item_id.map(id => parseInt(id)), (err, items) => {
     if (err) throw err
@@ -84,21 +83,38 @@ exports.createTransactions = (req, res) => {
       }
       createTransaction(setData, (err, results) => {
         if (err) throw err
-        items.forEach((item, idx) => {
-          console.log(item)
-          const setData = {
-            name: item.name,
-            price: item.price + additionalPrice[idx],
-            variants: data.item_variant[idx],
-            amount: data.item_amount[idx],
-            id_item: item.id,
-            id_transaction: results.insertId
-          }
-          createItemTransaction(setData, (err, results) => {
-            if (err) throw err
-            console.log(`Item ${item.id} inserted to items_transactions`)
+        if (items.length === 1) {
+          data.item_variant.forEach((v, i) => {
+            const setData = {
+              name: items[0].name,
+              price: items[0].price + additionalPrice[i],
+              variants: v,
+              amount: data.item_amount[i],
+              id_item: items[0].id,
+              id_transaction: results.insertId
+            }
+            createItemTransaction(setData, (err, results) => {
+              if (err) throw err
+              console.log(`Item ${items[0].id} inserted to items_transactions`)
+            })
           })
-        })
+        }
+        if (items.length > 1) {
+          items.forEach((item, idx) => {
+            const setData = {
+              name: item.name,
+              price: item.price + additionalPrice[idx],
+              variants: data.item_variant[idx],
+              amount: data.item_amount[idx],
+              id_item: item.id,
+              id_transaction: results.insertId
+            }
+            createItemTransaction(setData, (err, results) => {
+              if (err) throw err
+              console.log(`Item ${item.id} inserted to items_transactions`)
+            })
+          })
+        }
         return response(res, 200, true, 'Success add transaction!')
       })
     })
