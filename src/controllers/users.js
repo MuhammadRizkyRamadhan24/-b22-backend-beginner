@@ -33,7 +33,6 @@ exports.updateUser = (req, res) => {
           data.image = req.file.filename
           setData.push(data)
         }
-        console.log(setData[0].image)
         updateUser(setData[0], id, (err, results, _field) => {
           if (!err) {
             if (oldData[0].image === null || setData[0].image === undefined) {

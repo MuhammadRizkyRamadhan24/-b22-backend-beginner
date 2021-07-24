@@ -66,7 +66,16 @@ exports.createTransactions = (req, res) => {
     if (err) throw err
     const idUser = req.authUser.id
     const code = codeTransaction(APP_TRANSACTION_PREFIX, idUser)
-    const subTotal = items.map((item, idx) => (item.price + additionalPrice[idx]) * data.item_amount[idx]).reduce((acc, curr) => acc + curr)
+    const totalSub = []
+    if (items.length === 1) {
+      const total = data.item_variant.map((item, idx) => (items[0].price + additionalPrice[idx]) * data.item_amount[idx]).reduce((acc, curr) => acc + curr)
+      totalSub.push(total)
+    }
+    if (items.length > 1) {
+      const total = items.map((item, idx) => (item.price + additionalPrice[idx]) * data.item_amount[idx]).reduce((acc, curr) => acc + curr)
+      totalSub.push(total)
+    }
+    const subTotal = parseInt(totalSub[0])
     const tax = subTotal * 10 / 100
     const shippingCost = 10000
     const deliveryMethod = data.delivery_method || 'Dine in'
