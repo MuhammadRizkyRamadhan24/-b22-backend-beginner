@@ -19,7 +19,7 @@
 2. Start XAMPP
 3. Database configuration:
     * Open http://localhost/phpmyadmin in the browser
-    * Import database, select `libraryapp.sql` file from project folder
+    * Import database, select `coffee-shop.sql` file from project folder
 4. Start the server:
     * Open root project folder with command line (terminal, linux. cmd, windows. etc.)
     * Type and run this command `npm start` to start the server.
