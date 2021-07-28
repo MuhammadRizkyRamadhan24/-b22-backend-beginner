@@ -254,7 +254,9 @@ exports.deleteItems = (req, res) => {
         })
 
         itemsModel.getItemById(id, (err, results, _field) => {
-          if (err) throw err
+          if (err) {
+            return standardResponse(res, 500, false, 'An error occured')
+          }
           const oldData = results
           itemsModel.deleteItem(id, (err, results, _field) => {
             if (!err) {

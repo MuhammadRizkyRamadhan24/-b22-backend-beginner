@@ -26,7 +26,9 @@ exports.register = async (req, res) => {
       position: 0
     }
     userModel.createUser(setData, (err, results) => {
-      if (err) throw err
+      if (err) {
+        return standardResponse(res, 500, false, 'An error occured')
+      }
       if (results.affectedRows > 0) {
         return standardResponse(res, 200, true, 'Register Successfully')
       } else {
@@ -53,7 +55,9 @@ exports.login = async (req, res) => {
   } else {
     const { email, password } = req.body
     userModel.getUserByEmail(email, async (err, results) => {
-      if (err) throw err
+      if (err) {
+        return standardResponse(res, 500, false, 'An error occured')
+      }
       if (results.length < 1) return standardResponse(res, 401, false, 'Wrong Email or Password!')
       const user = results[0]
       const compare = await bcrypt.compare(password, user.password)

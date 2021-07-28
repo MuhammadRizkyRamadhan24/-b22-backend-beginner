@@ -63,7 +63,9 @@ exports.createTransactions = (req, res) => {
   }
   const additionalPrice = data.item_additional_price.map(elem => parseInt(elem))
   getItemsById(data.item_id.map(id => parseInt(id)), (err, items) => {
-    if (err) throw err
+    if (err) {
+      return response(res, 500, false, 'An error occured')
+    }
     const idUser = req.authUser.id
     const code = codeTransaction(APP_TRANSACTION_PREFIX, idUser)
     const totalSub = []
@@ -82,7 +84,9 @@ exports.createTransactions = (req, res) => {
     const paymentMethod = data.payment_method
     const total = subTotal + tax + shippingCost
     getUserById(idUser, (err, results) => {
-      if (err) throw err
+      if (err) {
+        return response(res, 500, false, 'An error occured')
+      }
       const shippingAddress = results[0].address
       if (!shippingAddress) {
         return response(res, 400, false, 'Address must be provided!')
@@ -91,7 +95,9 @@ exports.createTransactions = (req, res) => {
         code, total, tax, shippingCost, shippingAddress, deliveryMethod, paymentMethod, idUser
       }
       createTransaction(setData, (err, results) => {
-        if (err) throw err
+        if (err) {
+          return response(res, 500, false, 'An error occured')
+        }
         if (items.length === 1) {
           data.item_variant.forEach((v, i) => {
             const setData = {
@@ -103,7 +109,9 @@ exports.createTransactions = (req, res) => {
               id_transaction: results.insertId
             }
             createItemTransaction(setData, (err, results) => {
-              if (err) throw err
+              if (err) {
+                return response(res, 500, false, 'An error occured')
+              }
               console.log(`Item ${items[0].id} inserted to items_transactions`)
             })
           })
@@ -119,7 +127,9 @@ exports.createTransactions = (req, res) => {
               id_transaction: results.insertId
             }
             createItemTransaction(setData, (err, results) => {
-              if (err) throw err
+              if (err) {
+                return response(res, 500, false, 'An error occured')
+              }
               console.log(`Item ${item.id} inserted to items_transactions`)
             })
           })
@@ -133,7 +143,9 @@ exports.createTransactions = (req, res) => {
 exports.historyTransaction = (req, res) => {
   const id = req.authUser.id
   getTransactionByIdUser(id, (err, results) => {
-    if (err) throw err
+    if (err) {
+      return response(res, 500, false, 'An error occured')
+    }
     if (!err) {
       return response(res, 200, true, 'History Transactions!', results)
     } else {

@@ -61,7 +61,9 @@ exports.updatePass = (req, res) => {
   const id = req.authUser.id
   const { password, newPassword } = req.body
   getUserPassById(id, async (err, results) => {
-    if (err) throw err
+    if (err) {
+      return standardResponse(res, 500, false, 'An error occured')
+    }
     if (results.length < 1) return standardResponse(res, 401, false, 'User Nor Found!')
     const user = results[0]
     const compare = await bcrypt.compare(password, user.password)

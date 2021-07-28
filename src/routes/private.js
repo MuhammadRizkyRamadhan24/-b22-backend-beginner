@@ -3,10 +3,10 @@ const { createTransactions, historyTransaction, getDetailTransaction, deleteHist
 const { getUserById, updateUser, updatePass } = require('../controllers/users')
 const { user } = require('../middlewares/auth')
 const upload = require('../helpers/upload')
-const uploadImage = upload.single('image')
+// const uploadImage = upload.single('image')
 
 route.get('/profile', user, getUserById)
-route.put('/profile', user, uploadImage, updateUser)
+route.patch('/profile', user, upload, updateUser)
 route.put('/profile/change_password', user, updatePass)
 route.post('/transaction', user, createTransactions)
 route.get('/transaction', user, historyTransaction)
