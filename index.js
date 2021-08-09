@@ -39,6 +39,8 @@ app.use('/itemsvariants', itemsVariantsRoute)
 app.use('/auth', authRoute)
 app.use('/private', auth, privateRoute)
 
-app.listen(process.env.APP_PORT, () => {
-  console.log(`app running on port ${process.env.APP_PORT}`)
+const port = process.env.PORT || 8880
+
+app.listen(port || 8880, () => {
+  console.log(`app running on port ${port}`)
 })
