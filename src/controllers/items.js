@@ -109,6 +109,7 @@ exports.getSearchItems = (req, res) => {
         return standardResponse(res, 404, false, 'Item not found')
       }
     } else {
+      console.log(err)
       return standardResponse(res, 500, false, 'An error occured')
     }
   })

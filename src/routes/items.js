@@ -5,7 +5,7 @@ const upload = require('../helpers/upload')
 // const uploadImage = upload.single('image')
 
 // route.get('/', auth, user, itemController.getItems)
-route.get('', auth, user, itemController.getSearchItems)
+route.get('', itemController.getSearchItems)
 route.post('/', auth, admin, upload, itemController.createItems)
 route.get('/:id', auth, user, itemController.getDetailItem)
 route.put('/:id', auth, admin, upload, itemController.updateItems)
