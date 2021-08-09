@@ -6,7 +6,7 @@ const { createItemCategory, deleteItemCategory, getItemCategoryByIdItems } = req
 const { createItemVariant, deleteItemVariant, getItemVariantByIdItems } = require('../models/itemsVariants')
 const { response: standardResponse } = require('../helpers/standardResponse')
 
-const { APP_URL, PORT } = process.env
+const { APP_URL } = process.env
 
 exports.getItems = (req, res) => {
   itemsModel.getItems((err, results, _field) => {
@@ -98,8 +98,8 @@ exports.getSearchItems = (req, res) => {
             pageInfo.currentPage = page
             pageInfo.lastPage = lastPage
             pageInfo.limitData = limit
-            pageInfo.nextPage = page < lastPage ? `${APP_URL}${PORT}/items?search=${req.query.search}&order=${order}&sort=${sort}&page=${page + 1}` : null
-            pageInfo.prevPage = page > 1 ? `${APP_URL}${PORT}/items?search=${req.query.search}&order=${order}&sort=${sort}&page=${page - 1}` : null
+            pageInfo.nextPage = page < lastPage ? `${APP_URL}/items?search=${req.query.search}&order=${order}&sort=${sort}&page=${page + 1}` : null
+            pageInfo.prevPage = page > 1 ? `${APP_URL}/items?search=${req.query.search}&order=${order}&sort=${sort}&page=${page - 1}` : null
             return standardResponse(res, 200, true, 'Search items', data, pageInfo)
           } else {
             return standardResponse(res, 500, false, 'An error occured')
