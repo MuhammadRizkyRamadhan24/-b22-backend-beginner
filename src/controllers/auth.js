@@ -27,7 +27,6 @@ exports.register = async (req, res) => {
     }
     userModel.createUser(setData, (err, results) => {
       if (err) {
-        console.log(err)
         return standardResponse(res, 500, false, 'An error occured')
       }
       if (results.affectedRows > 0) {
