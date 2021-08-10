@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
-// const cors = require('cors')
+const cors = require('cors')
 
 require('dotenv').config()
 
@@ -9,7 +9,7 @@ const app = express()
 
 // CORS
 // const whitelist = ['http://localhost:3000', 'https://localhost:3000']
-// app.use(cors())
+app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
