@@ -31,7 +31,7 @@ const upload = multer({
   }
 }).single('image')
 
-const uplaodFilter = (req, res, next) => {
+const uploadFilter = (req, res, next) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return response(res, 400, false, err.message)
@@ -42,4 +42,4 @@ const uplaodFilter = (req, res, next) => {
   })
 }
 
-module.exports = uplaodFilter
+module.exports = uploadFilter

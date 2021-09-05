@@ -118,6 +118,7 @@ exports.getSearchItems = (req, res) => {
 exports.createItems = (req, res) => {
   const setData = req.body
   setData.image = req.file.filename
+  console.log(setData)
   itemsModel.createItem(setData, (err, results, _field) => {
     if (!err) {
       if (results.affectedRows > 0) {

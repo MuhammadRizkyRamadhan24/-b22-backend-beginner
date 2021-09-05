@@ -1,6 +1,6 @@
 const route = require('express').Router()
 const { createTransactions, historyTransaction, getDetailTransaction, deleteHistoryByIdTransaction } = require('../controllers/transactions')
-const { getUserById, updateUser, updatePass } = require('../controllers/users')
+const { getUserById, updateUser, updatePass, getUserByName } = require('../controllers/users')
 const { user } = require('../middlewares/auth')
 const upload = require('../helpers/upload')
 // const uploadImage = upload.single('image')
@@ -12,5 +12,6 @@ route.post('/transaction', user, createTransactions)
 route.get('/transaction', user, historyTransaction)
 route.delete('/transaction/:id', user, deleteHistoryByIdTransaction)
 route.get('/transaction/:id/detail', user, getDetailTransaction)
+route.get('/chat', user, getUserByName)
 
 module.exports = route

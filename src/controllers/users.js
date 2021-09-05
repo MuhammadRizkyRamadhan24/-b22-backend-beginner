@@ -1,4 +1,4 @@
-const { getUserById, getUserPassById, updateUser, getUserByIdUser } = require('../models/users')
+const { getUserById, getUserPassById, updateUser, getUserByIdUser, getUserByName } = require('../models/users')
 const { response: standardResponse } = require('../helpers/standardResponse')
 const bcrypt = require('bcrypt')
 const fs = require('fs')
@@ -13,6 +13,17 @@ exports.getUserById = (req, res) => {
     delete data[0].password
     if (!err) {
       return standardResponse(res, 200, true, 'List User by Id User', data)
+    } else {
+      return standardResponse(res, 500, false, 'An error occured')
+    }
+  })
+}
+
+exports.getUserByName = (req, res) => {
+  console.log(req.query.search)
+  getUserByName(req.query.search, (err, results, _fields) => {
+    if (!err) {
+      return standardResponse(res, 200, true, 'List User', results)
     } else {
       return standardResponse(res, 500, false, 'An error occured')
     }
