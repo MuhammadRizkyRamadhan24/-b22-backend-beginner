@@ -4,12 +4,12 @@ const {expect, should, assert} = require('chai')
 const { response } = require('../src/helpers/standardResponse')
 const {APP_URL} = process.env
 
-const { getVariants, createVariants, updateVariants, deleteVariants } = require('../src/controllers/variants')
-describe('Variants Testing ', () => {
-  it(`get variants`, (done) => {
+const { getCategories, getItemByCategory, createCategories, updateCategories, deleteCategories } = require('../src/controllers/categories')
+
+describe('get Category Testing ', () => {
+  it(`get Category`, (done) => {
     let req = {
-      body: {
-      }
+     
     }
     const mockingResponse = () => {
       const res = {}
@@ -18,10 +18,55 @@ describe('Variants Testing ', () => {
       return res
     }
     const res = mockingResponse()
-    getVariants(req, res).then((data) => {
+    getCategories(req, res).then((data) => {
       expect(data.json.args[0][0].success).to.be.true
-      expect(data.json.args[0][0].message).equal('List of Variant')
+      expect(data.json.args[0][0].message).equal('List of Category')
       expect(data.status.args[0][0]).equal(200)
+    }).catch((err) => {
+      console.log(err)
+    })
+    done()
+  })
+
+})
+
+describe('get item by Category Testing ', () => {
+  it(`get item By Category success`, (done) => {
+    let req = {
+     params: {id: 1}
+    }
+    const mockingResponse = () => {
+      const res = {}
+      res.status = sinon.stub().returns(res)
+      res.json = sinon.stub().returns(res)
+      return res
+    }
+    const res = mockingResponse()
+    getItemByCategory(req, res).then((data) => {
+      expect(data.json.args[0][0].success).to.be.true
+      expect(data.json.args[0][0].message).equal('List Items by Category')
+      expect(data.status.args[0][0]).equal(200)
+    }).catch((err) => {
+      console.log(err)
+    })
+    done()
+  })
+
+  it(`get item By Category failed`, (done) => {
+    let req = {
+     params: {id: 999}
+    }
+    const mockingResponse = () => {
+      const res = {}
+      res.status = sinon.stub().returns(res)
+      res.json = sinon.stub().returns(res)
+      return res
+    }
+    const res = mockingResponse()
+    getItemByCategory(req, res).then((data) => {
+      expect(data.json.args[0][0].success).to.be.false
+      expect(data.json.args[0][0].message).equal('Category Not Found')
+      expect(data.status.args[0][0]).equal(404)
     }).catch((err) => {
       console.log(err)
     })
@@ -29,12 +74,12 @@ describe('Variants Testing ', () => {
   })
 })
 
-describe('Create Variants Testing ', () => {
-  it(`create Variants success`, (done) => {
+describe('Create Category Testing ', () => {
+  it(`Create Category success`, (done) => {
     let req = {
-      body: {
-        name_variant: 'EXP'
-      }
+     body: {
+      name_category: 'test',
+     },
     }
     const mockingResponse = () => {
       const res = {}
@@ -43,9 +88,9 @@ describe('Create Variants Testing ', () => {
       return res
     }
     const res = mockingResponse()
-    createVariants(req, res).then((data) => {
+    createCategories(req, res).then((data) => {
       expect(data.json.args[0][0].success).to.be.true
-      expect(data.json.args[0][0].message).equal('Variant has been created successfully')
+      expect(data.json.args[0][0].message).equal('Category has been created successfully')
       expect(data.status.args[0][0]).equal(200)
     }).catch((err) => {
       console.log(err)
@@ -53,15 +98,14 @@ describe('Create Variants Testing ', () => {
     done()
   })
 
-  // it(`create Variants failed not admin`, (done) => {
+  // it(`Create Category failed`, (done) => {
   //   let req = {
-  //     body: {
-  //       name: 'coba',
-  //       aditional_price: 3000
-  //     },
-  //     authUser: {
-  //       id: 37
-  //     }
+  //    body: {
+  //      name: 'test',
+  //    },
+  //    authUser: {
+  //      id: 37
+  //    }
   //   }
   //   const mockingResponse = () => {
   //     const res = {}
@@ -70,7 +114,7 @@ describe('Create Variants Testing ', () => {
   //     return res
   //   }
   //   const res = mockingResponse()
-  //   createVariants(req, res).then((data) => {
+  //   createCategory(req, res).then((data) => {
   //     expect(data.json.args[0][0].success).to.be.false
   //     expect(data.json.args[0][0].message).equal('You are not admin can\'t do this action')
   //     expect(data.status.args[0][0]).equal(500)
@@ -81,18 +125,15 @@ describe('Create Variants Testing ', () => {
   // })
 })
 
-describe('update Variants Testing ', () => {
-  it(`update Variants success`, (done) => {
+describe('Update Category Testing ', () => {
+  it(`Update Category success`, (done) => {
     let req = {
-      body: {
-        name_variant: 'EXP'
-      },
-      params: {
-        id: 14
-      },
-      headers: {
-        authorization : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiemlkYW4ubXVoNjlAZ21haWwuY29tIiwicG9zaXRpb24iOjEsImlhdCI6MTYzMDg1NTY4Mn0.ola7zcz0dJTL6lydDHIDhoSclhmAI_Xmm4myhra2Qw0'
-      }
+     body: {
+      name_category: 'Test',
+     },
+     params: {
+       id: 10
+     }
     }
     const mockingResponse = () => {
       const res = {}
@@ -101,9 +142,9 @@ describe('update Variants Testing ', () => {
       return res
     }
     const res = mockingResponse()
-    updateVariants(req, res).then((data) => {
+    updateCategories(req, res).then((data) => {
       expect(data.json.args[0][0].success).to.be.true
-      expect(data.json.args[0][0].message).equal('Variant updated successfully!')
+      expect(data.json.args[0][0].message).equal('Category updated successfully!')
       expect(data.status.args[0][0]).equal(200)
     }).catch((err) => {
       console.log(err)
@@ -111,18 +152,17 @@ describe('update Variants Testing ', () => {
     done()
   })
 
-  // it(`update Variants failed not admin`, (done) => {
+  // it(`Update Category failed user role not admin`, (done) => {
   //   let req = {
-  //     body: {
-  //       name: 'coba',
-  //       aditionalPrice: 3000
-  //     },
-  //     authUser: {
-  //       id: 37
-  //     },
-  //     params: {
-  //       id: 24
-  //     }
+  //    body: {
+  //      name: 'test',
+  //    },
+  //    authUser: {
+  //      id: 37
+  //    },
+  //    params: {
+  //     id: 20
+  //   }
   //   }
   //   const mockingResponse = () => {
   //     const res = {}
@@ -131,7 +171,7 @@ describe('update Variants Testing ', () => {
   //     return res
   //   }
   //   const res = mockingResponse()
-  //   updateVariants(req, res).then((data) => {
+  //   updateCategory(req, res).then((data) => {
   //     expect(data.json.args[0][0].success).to.be.false
   //     expect(data.json.args[0][0].message).equal('You are not admin can\'t do this action')
   //     expect(data.status.args[0][0]).equal(500)
@@ -141,16 +181,13 @@ describe('update Variants Testing ', () => {
   //   done()
   // })
 
-  it(`update Variants failed`, (done) => {
+  it(`Update Category failed`, (done) => {
     let req = {
       body: {
-        name_variant: 'EXP'
+        name: 'test',
       },
       params: {
-        id: 999
-      },
-      headers: {
-        authorization : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiemlkYW4ubXVoNjlAZ21haWwuY29tIiwicG9zaXRpb24iOjEsImlhdCI6MTYzMDg1NTY4Mn0.ola7zcz0dJTL6lydDHIDhoSclhmAI_Xmm4myhra2Qw0'
+        id: 14
       }
     }
     const mockingResponse = () => {
@@ -160,9 +197,9 @@ describe('update Variants Testing ', () => {
       return res
     }
     const res = mockingResponse()
-    updateVariants(req, res).then((data) => {
+    updateCategories(req, res).then((data) => {
       expect(data.json.args[0][0].success).to.be.false
-      expect(data.json.args[0][0].message).equal('Variant not found!')
+      expect(data.json.args[0][0].message).equal('Category not found!')
       expect(data.status.args[0][0]).equal(404)
     }).catch((err) => {
       console.log(err)
@@ -171,15 +208,12 @@ describe('update Variants Testing ', () => {
   })
 })
 
-describe('delete Variants Testing', () => {
-  it(`delete Variants success`, (done) => {
+describe('delete Category Testing ', () => {
+  it(`delete Category success`, (done) => {
     let req = {
       body: {},
       params: {
-        id: 14
-      },
-      headers: {
-        authorization : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiemlkYW4ubXVoNjlAZ21haWwuY29tIiwicG9zaXRpb24iOjEsImlhdCI6MTYzMDg1NTY4Mn0.ola7zcz0dJTL6lydDHIDhoSclhmAI_Xmm4myhra2Qw0'
+        id: 10
       }
     }
     const mockingResponse = () => {
@@ -189,9 +223,9 @@ describe('delete Variants Testing', () => {
       return res
     }
     const res = mockingResponse()
-    deleteVariants(req, res).then((data) => {
+    deleteCategories(req, res).then((data) => {
       expect(data.json.args[0][0].success).to.be.true
-      expect(data.json.args[0][0].message).equal('Variant has been deleted!')
+      expect(data.json.args[0][0].message).equal('Category has been deleted!')
       expect(data.status.args[0][0]).equal(200)
     }).catch((err) => {
       console.log(err)
@@ -199,11 +233,11 @@ describe('delete Variants Testing', () => {
     done()
   })
 
-  it(`delete Variants failed`, (done) => {
+  it(`delete Category failed`, (done) => {
     let req = {
       body: {},
       params: {
-        id: 999
+        id: 2131
       }
     }
     const mockingResponse = () => {
@@ -213,9 +247,9 @@ describe('delete Variants Testing', () => {
       return res
     }
     const res = mockingResponse()
-    deleteVariants(req, res).then((data) => {
+    deleteCategories(req, res).then((data) => {
       expect(data.json.args[0][0].success).to.be.false
-      expect(data.json.args[0][0].message).equal('Variant not found!')
+      expect(data.json.args[0][0].message).equal('Category not found!')
       expect(data.status.args[0][0]).equal(404)
     }).catch((err) => {
       console.log(err)
@@ -223,7 +257,7 @@ describe('delete Variants Testing', () => {
     done()
   })
 
-  // it(`delete Variants failed not admin`, (done) => {
+  // it(`delete Category failed not admin`, (done) => {
   //   let req = {
   //     body: {},
   //     authUser: {
@@ -231,7 +265,7 @@ describe('delete Variants Testing', () => {
   //     },
   //     params: {
   //       id: 3999
-  //     },
+  //     }
   //   }
   //   const mockingResponse = () => {
   //     const res = {}
@@ -240,7 +274,7 @@ describe('delete Variants Testing', () => {
   //     return res
   //   }
   //   const res = mockingResponse()
-  //   deleteVariants(req, res).then((data) => {
+  //   deleteCategory(req, res).then((data) => {
   //     expect(data.json.args[0][0].success).to.be.false
   //     expect(data.json.args[0][0].message).equal('You are not admin can\'t do this action')
   //     expect(data.status.args[0][0]).equal(500)

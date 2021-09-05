@@ -1,4 +1,6 @@
 const db = require('../helpers/db')
+const { promisify } = require('util')
+const execPromise = promisify(db.query).bind(db)
 
 exports.getItems = (cb) => {
   // db.query('SELECT items.id, items.name, items.image, items.price, items.detail, categories.name_category FROM items LEFT JOIN items_categories on items_categories.id_items = items.id INNER JOIN categories on categories.id = items_categories.id_category', cb)
@@ -21,8 +23,12 @@ exports.deleteItem = (id, cb) => {
   db.query('DELETE FROM items WHERE id = ?', [id], cb)
 }
 
-exports.getItemByCategory = (id, cb) => {
-  db.query('SELECT items.id, items.name, items.image, items.price FROM items left JOIN items_categories on items_categories.id_items = items.id WHERE items_categories.id_category = ?', [id], cb)
+// exports.getItemByCategory = (id, cb) => {
+//   db.query('SELECT items.id, items.name, items.image, items.price FROM items left JOIN items_categories on items_categories.id_items = items.id WHERE items_categories.id_category = ?', [id], cb)
+// }
+
+exports.getItemByCategory = (id) => {
+  return execPromise('SELECT items.id, items.name, items.image, items.price FROM items left JOIN items_categories on items_categories.id_items = items.id WHERE items_categories.id_category = ?', [id])
 }
 
 exports.getSearch = (limit, page, sort, order, search, cb) => {
