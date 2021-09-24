@@ -27,6 +27,22 @@ exports.getHomeChat = (req, res) => {
   })
 }
 
+exports.deleteChat = (req, res) => {
+  const { id } = req.params
+  const idUser = req.authUser.id
+  chatModel.deleteChat(id, (err, results, _field) => {
+    if (!err) {
+      req.socket.emit(id, {
+        message: `delete chat ${id}`,
+        user: idUser
+      })
+      return standardResponse(res, 200, true, 'Success delete chat')
+    } else {
+      return standardResponse(res, 500, false, 'An error occured')
+    }
+  })
+}
+
 exports.postChat = (req, res) => {
   const setData = req.body
   chatModel.updateStatusChat(setData.id_sender, setData.id_receiver, (err, results, _field) => {

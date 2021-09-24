@@ -4,19 +4,33 @@ const bcrypt = require('bcrypt')
 const fs = require('fs')
 const path = './src/public/images'
 
-exports.getUserById = (req, res) => {
+// exports.getUserById = (req, res) => {
+//   const id = req.authUser.id
+//   getUserByIdUser(id, (err, results, _fields) => {
+//     const data = {
+//       ...results
+//     }
+//     delete data[0].password
+//     if (!err) {
+//       return standardResponse(res, 200, true, 'List User by Id User', data)
+//     } else {
+//       return standardResponse(res, 500, false, 'An error occured')
+//     }
+//   })
+// }
+
+exports.getUserById = async (req, res) => {
   const id = req.authUser.id
-  getUserByIdUser(id, (err, results, _fields) => {
+  const results = await getUserByIdUser(id)
+  if (results.length > 0) {
     const data = {
       ...results
     }
     delete data[0].password
-    if (!err) {
-      return standardResponse(res, 200, true, 'List User by Id User', data)
-    } else {
-      return standardResponse(res, 500, false, 'An error occured')
-    }
-  })
+    return standardResponse(res, 200, true, 'List User by Id User', data[0])
+  } else {
+    return standardResponse(res, 404, false, 'An error occured')
+  }
 }
 
 exports.getUserByName = (req, res) => {

@@ -14,7 +14,7 @@ exports.login = async (req, res) => {
   const compare = await bcrypt.compare(password, user.password)
   if (compare) {
     const token = jwt.sign({ id: user.id, email: user.email, position: user.position }, process.env.APP_KEY)
-    return standardResponse(res, 200, true, 'Login Success', { token })
+    return standardResponse(res, 200, true, 'Login Success', { token, id: user.id })
   } else {
     return standardResponse(res, 401, false, 'Wrong Email or Password!')
   }

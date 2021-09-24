@@ -8,6 +8,6 @@ router.get('/', auth, chatController.getChat)
 router.get('/home', auth, chatController.getHomeChat)
 router.post('/', auth, chatController.postChat)
 router.post('/attachment', auth, upload, chatController.postAttachment)
-// router.delete('/:id', authMiddleware.verifyJwtToken, chatController.deleteChat)
+router.put('/delete/:id', auth, chatController.deleteChat)
 
 module.exports = router

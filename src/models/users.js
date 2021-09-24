@@ -31,10 +31,16 @@ exports.getUserByEmail = (email, cb) => {
   )
 }
 
-exports.getUserByIdUser = (email, cb) => {
-  db.query(`
+// exports.getUserByIdUser = (email, cb) => {
+//   db.query(`
+//   SELECT * FROM ${table} WHERE id = ?
+//   `, [email], cb)
+// }
+
+exports.getUserByIdUser = (email) => {
+  return execPromise(`
   SELECT * FROM ${table} WHERE id = ?
-  `, [email], cb)
+  `, [email])
 }
 
 exports.getUserById = (id, cb) => {
@@ -43,11 +49,23 @@ exports.getUserById = (id, cb) => {
   `, [id], cb)
 }
 
+// exports.getUserById = (id) => {
+//   return execPromise(`
+//   SELECT id, email, phone_number, image, address FROM ${table} WHERE id = ?
+//   `, [id])
+// }
+
 exports.getUserByName = (search, cb) => {
   db.query(`
   SELECT id, display_name, image FROM users WHERE display_name LIKE '%${search}%' OR phone_number LIKE '%${search}%'
   `, [search, search], cb)
 }
+
+// exports.getUserByName = (search) => {
+//   return execPromise(`
+//   SELECT id, display_name, image FROM users WHERE display_name LIKE '%${search}%' OR phone_number LIKE '%${search}%'
+//   `, [search, search])
+// }
 
 exports.getUserPassById = (id, cb) => {
   db.query(`
@@ -55,6 +73,16 @@ exports.getUserPassById = (id, cb) => {
   `, [id], cb)
 }
 
+// exports.getUserPassById = (id, cb) => {
+//   return execPromise(`
+//   SELECT password FROM ${table} WHERE id = ?
+//   `, [id])
+// }
+
 exports.updateUser = (data, id, cb) => {
   db.query(`UPDATE ${table} SET ? WHERE id = ?`, [data, id], cb)
 }
+
+// exports.updateUser = (data, id) => {
+//   return execPromise(`UPDATE ${table} SET ? WHERE id = ?`, [data, id])
+// }

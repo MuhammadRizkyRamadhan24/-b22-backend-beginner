@@ -88,7 +88,7 @@ describe('update Variants Testing ', () => {
         name_variant: 'EXP'
       },
       params: {
-        id: 14
+        id: 17
       },
       headers: {
         authorization : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiemlkYW4ubXVoNjlAZ21haWwuY29tIiwicG9zaXRpb24iOjEsImlhdCI6MTYzMDg1NTY4Mn0.ola7zcz0dJTL6lydDHIDhoSclhmAI_Xmm4myhra2Qw0'
@@ -176,7 +176,7 @@ describe('delete Variants Testing', () => {
     let req = {
       body: {},
       params: {
-        id: 14
+        id: 17
       },
       headers: {
         authorization : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiemlkYW4ubXVoNjlAZ21haWwuY29tIiwicG9zaXRpb24iOjEsImlhdCI6MTYzMDg1NTY4Mn0.ola7zcz0dJTL6lydDHIDhoSclhmAI_Xmm4myhra2Qw0'

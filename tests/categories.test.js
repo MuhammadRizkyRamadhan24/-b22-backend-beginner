@@ -97,32 +97,6 @@ describe('Create Category Testing ', () => {
     })
     done()
   })
-
-  // it(`Create Category failed`, (done) => {
-  //   let req = {
-  //    body: {
-  //      name: 'test',
-  //    },
-  //    authUser: {
-  //      id: 37
-  //    }
-  //   }
-  //   const mockingResponse = () => {
-  //     const res = {}
-  //     res.status = sinon.stub().returns(res)
-  //     res.json = sinon.stub().returns(res)
-  //     return res
-  //   }
-  //   const res = mockingResponse()
-  //   createCategory(req, res).then((data) => {
-  //     expect(data.json.args[0][0].success).to.be.false
-  //     expect(data.json.args[0][0].message).equal('You are not admin can\'t do this action')
-  //     expect(data.status.args[0][0]).equal(500)
-  //   }).catch((err) => {
-  //     console.log(err)
-  //   })
-  //   done()
-  // })
 })
 
 describe('Update Category Testing ', () => {
@@ -132,7 +106,7 @@ describe('Update Category Testing ', () => {
       name_category: 'Test',
      },
      params: {
-       id: 10
+       id: 9
      }
     }
     const mockingResponse = () => {
@@ -152,42 +126,13 @@ describe('Update Category Testing ', () => {
     done()
   })
 
-  // it(`Update Category failed user role not admin`, (done) => {
-  //   let req = {
-  //    body: {
-  //      name: 'test',
-  //    },
-  //    authUser: {
-  //      id: 37
-  //    },
-  //    params: {
-  //     id: 20
-  //   }
-  //   }
-  //   const mockingResponse = () => {
-  //     const res = {}
-  //     res.status = sinon.stub().returns(res)
-  //     res.json = sinon.stub().returns(res)
-  //     return res
-  //   }
-  //   const res = mockingResponse()
-  //   updateCategory(req, res).then((data) => {
-  //     expect(data.json.args[0][0].success).to.be.false
-  //     expect(data.json.args[0][0].message).equal('You are not admin can\'t do this action')
-  //     expect(data.status.args[0][0]).equal(500)
-  //   }).catch((err) => {
-  //     console.log(err)
-  //   })
-  //   done()
-  // })
-
   it(`Update Category failed`, (done) => {
     let req = {
       body: {
         name: 'test',
       },
       params: {
-        id: 14
+        id: 142
       }
     }
     const mockingResponse = () => {
@@ -213,7 +158,7 @@ describe('delete Category Testing ', () => {
     let req = {
       body: {},
       params: {
-        id: 10
+        id: 9
       }
     }
     const mockingResponse = () => {
