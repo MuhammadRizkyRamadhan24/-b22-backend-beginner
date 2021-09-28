@@ -1,4 +1,4 @@
-`***B22-Backend-CoffeeShop***` is a simple api endpoint for library application built with Node.js, Express Js as a framework of Node.js and MySQL as a database which has [features](https://github.com/rifanid98/libraryapp-api#features) such as login / register using JWT, pasword hashing, CORS, etc. 
+`***b22-coffeeShop-backend***` is a simple api endpoint for library application built with Node.js, Express Js as a framework of Node.js and MySQL as a database which has [features](https://github.com/rifanid98/libraryapp-api#features) such as login / register using JWT, pasword hashing, CORS, etc. 
 
 ## :memo: Table Of Content
 * [Prerequisites](https://github.com/MuhammadRizkyRamadhan24/b22-backend-beginner#prerequisites)
