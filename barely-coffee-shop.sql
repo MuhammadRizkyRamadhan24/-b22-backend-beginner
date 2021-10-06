@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Jul 2021 pada 08.30
+-- Waktu pembuatan: 06 Okt 2021 pada 11.53
 -- Versi server: 10.1.35-MariaDB
 -- Versi PHP: 7.2.9
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `coffee-shop`
+-- Database: `barely-coffee-shop`
 --
 
 -- --------------------------------------------------------
@@ -41,8 +41,33 @@ INSERT INTO `categories` (`id`, `name_category`) VALUES
 (1, 'Favorite Product'),
 (2, 'Coffee'),
 (3, 'Non Coffee'),
-(4, 'Foods'),
-(5, 'Add-on');
+(4, 'Foods');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `chats`
+--
+
+CREATE TABLE `chats` (
+  `id` int(11) NOT NULL,
+  `id_sender` int(11) NOT NULL,
+  `id_receiver` int(11) NOT NULL,
+  `latest` enum('0','1') NOT NULL DEFAULT '1',
+  `chat` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `deleted` enum('0','1','','') NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `chats`
+--
+
+INSERT INTO `chats` (`id`, `id_sender`, `id_receiver`, `latest`, `chat`, `image`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 20, 1, '1', 'Test', NULL, '1', '2021-09-24 06:42:07', '2021-09-24 06:42:32'),
+(2, 20, 11, '1', ' Apa kabar? ', NULL, '1', '2021-09-24 06:44:13', '2021-09-24 06:44:18');
 
 -- --------------------------------------------------------
 
@@ -198,32 +223,6 @@ CREATE TABLE `item_transactions` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `item_transactions`
---
-
-INSERT INTO `item_transactions` (`id`, `name`, `price`, `variants`, `amount`, `id_item`, `id_transaction`, `created_at`, `updated_at`) VALUES
-(1, 'Espresso', 17000, 'L', 1, 1, 1, '2021-06-20 08:25:45', NULL),
-(2, 'V60', 27000, 'L', 1, 4, 1, '2021-06-20 08:25:45', NULL),
-(3, 'Espresso', 17000, 'L', 1, 1, 2, '2021-06-20 08:25:59', NULL),
-(4, 'V60', 27000, 'L', 1, 4, 2, '2021-06-20 08:25:59', NULL),
-(45, 'Taro Latte', 21000, 'R', 2, 8, 34, '2021-06-24 12:42:15', NULL),
-(46, 'Americano', 22000, 'L', 1, 11, 34, '2021-06-24 12:42:15', NULL),
-(47, 'AeroPress ', 27000, 'L', 3, 5, 35, '2021-06-25 02:23:48', NULL),
-(48, 'Coffe Mocktail', 25000, 'R', 2, 10, 35, '2021-06-25 02:23:48', NULL),
-(49, 'AeroPress ', 27000, 'L', 2, 5, 36, '2021-06-25 11:57:08', NULL),
-(70, 'Caffè latte', 26000, 'XL', 1, 3, 50, '2021-07-10 15:02:18', NULL),
-(71, 'Caffè latte', 26000, 'XL', 2, 3, 51, '2021-07-10 15:03:34', NULL),
-(72, 'Mocktail', 25000, 'L', 1, 6, 52, '2021-07-10 15:07:49', NULL),
-(73, 'Mocktail', 25000, 'L', 5, 6, 53, '2021-07-10 15:14:12', NULL),
-(75, 'Potato wedges', 22000, 'XL', 3, 16, 55, '2021-07-10 15:21:37', NULL),
-(76, 'Caffè latte', 26000, 'XL', 1, 3, 56, '2021-07-10 15:28:10', NULL),
-(79, 'Cappuccino', 22000, 'L', 3, 2, 59, '2021-07-12 03:23:12', NULL),
-(84, 'Cappuccino', 22000, 'L', 2, 2, 61, '2021-07-12 04:36:40', NULL),
-(87, 'Americano', 20000, 'R', 1, 11, 64, '2021-07-12 16:48:18', NULL),
-(88, 'Cappuccino', 20000, 'R', 3, 2, 65, '2021-07-13 03:07:44', NULL),
-(89, 'Cappuccino', 20000, 'R', 1, 2, 66, '2021-07-13 04:55:18', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -237,34 +236,12 @@ CREATE TABLE `transactions` (
   `tax` int(11) NOT NULL,
   `shipping_cost` int(11) DEFAULT NULL,
   `shipping_address` varchar(255) DEFAULT NULL,
-  `delivery_method` varchar(50) NOT NULL,
+  `delivery_method` varchar(50) NOT NULL DEFAULT 'Dine in',
   `payment_method` varchar(100) NOT NULL,
   `id_user` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `transactions`
---
-
-INSERT INTO `transactions` (`id`, `code`, `total`, `tax`, `shipping_cost`, `shipping_address`, `delivery_method`, `payment_method`, `id_user`, `created_at`, `updated_at`) VALUES
-(1, 'CS/2062021/7571/1', 44000, 4400, 10000, 'Rumah Jauh', '', 'Bank', 1, '2021-06-20 08:25:45', NULL),
-(2, 'CS/2062021/7231/1', 44000, 4400, 10000, 'Rumah Jauh', '', 'Bank', 1, '2021-06-20 08:25:59', NULL),
-(34, 'CS/2462021/6691/12', 80400, 6400, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', '', 'Bank', 12, '2021-06-24 12:42:15', NULL),
-(35, 'CS/2562021/1449/13', 154100, 13100, 10000, 'Ngendi Bae', '', 'Credit Card', 13, '2021-06-25 02:23:47', NULL),
-(36, 'CS/2562021/3674/12', 69400, 5400, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', '', 'Credit Card', 12, '2021-06-25 11:57:07', NULL),
-(50, 'CS/1072021/7092/11', 38600, 2600, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Pick up at store', 'Card', 11, '2021-07-10 15:02:18', NULL),
-(51, 'CS/1072021/5403/11', 67200, 5200, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Pick up at store', 'Bank', 11, '2021-07-10 15:03:34', NULL),
-(52, 'CS/1072021/7019/11', 37500, 2500, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Dine in', 'Bank', 11, '2021-07-10 15:07:49', NULL),
-(53, 'CS/1072021/3795/11', 147500, 12500, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Pick up at store', 'Card', 11, '2021-07-10 15:14:12', NULL),
-(55, 'CS/1072021/8675/11', 82600, 6600, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Door delivery', 'Bank', 11, '2021-07-10 15:21:37', NULL),
-(56, 'CS/1072021/5080/11', 38600, 2600, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Pick up at store', 'Bank', 11, '2021-07-10 15:28:10', NULL),
-(59, 'CS/1272021/5907/11', 82600, 6600, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Dine in', 'Bank', 11, '2021-07-12 03:23:12', NULL),
-(61, 'CS/1272021/8942/11', 58400, 4400, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Pick up at store', 'COD', 11, '2021-07-12 04:36:40', NULL),
-(64, 'CS/1272021/1393/11', 32000, 2000, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Door delivery', 'COD', 11, '2021-07-12 16:48:18', NULL),
-(65, 'CS/1372021/7556/11', 76000, 6000, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Pick up at store', 'Bank', 11, '2021-07-13 03:07:44', NULL),
-(66, 'CS/1372021/4935/11', 32000, 2000, 10000, 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Dine in', 'Card', 11, '2021-07-13 04:55:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -278,7 +255,7 @@ CREATE TABLE `users` (
   `phone_number` varchar(20) NOT NULL,
   `position` int(1) NOT NULL DEFAULT '0',
   `gender` enum('male','female') NOT NULL,
-  `date_birth` date NOT NULL,
+  `date_birth` date NOT NULL DEFAULT '0000-00-00',
   `password` varchar(255) NOT NULL,
   `image` varchar(100) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
@@ -294,20 +271,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `phone_number`, `position`, `gender`, `date_birth`, `password`, `image`, `address`, `display_name`, `first_name`, `last_name`, `created_at`, `updated_at`) VALUES
-(1, 'example@admin.com', '087898789878', 1, 'male', '0000-00-00', '$2b$10$5txtT4eu7FmOi54FLUjHluqEE7kbjrLuE2fMiT.DZszTw6DdNxH1.', 'image-1624527210528.png', 'Rumah Jauh', NULL, NULL, NULL, '2021-06-14 12:54:41', '2021-06-24 09:34:05'),
-(2, 'zidan@zidan.id', '081234567890', 1, 'male', '0000-00-00', '$2b$10$JKBXY/d1v2V.Lr3.p8kyseW9YF9nVgSJL7bm4OkQofCa125M3uWna', 'image-1623823786254.jpg', 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', NULL, NULL, NULL, '2021-06-15 09:57:47', '2021-06-16 06:09:46'),
-(8, 'example@user.com', '088888888888', 0, 'male', '0000-00-00', '$2b$10$WwGt2ifo30ojq/5ewDvwCusILItTygtsy5dCC6KEwK6vqp6iroYAi', 'image-1623824133145.jpg', 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', NULL, NULL, NULL, '2021-06-16 06:08:15', '2021-06-16 06:29:30'),
-(9, 'user@user.co.id', '08989000980', 0, 'male', '0000-00-00', '$2b$10$2.BpkmRgMZg6iX6yGtHyLO7ukKAkM/iO5hlMkIdS9Kpz7bN33spnO', NULL, NULL, NULL, NULL, NULL, '2021-06-16 08:19:35', NULL),
-(10, 'user@user.co.idn', '089890009809', 0, 'male', '0000-00-00', '$2b$10$r74rJpK1SdbOVQTxw8YsHuqnA9dOg33PAbRth6v6LXvcJ.zQm0.n6', NULL, NULL, NULL, NULL, NULL, '2021-06-18 08:48:42', NULL),
-(11, 'zidan.muh88@gmail.com', '0895358663696', 0, 'male', '2001-12-13', '$2b$10$H72B0Ac2xahNGdDiDiwtn.CIxKq/4FxH.YtgIUSBd9nrTNl2JOUv.', 'image-1626151319150.jpg', 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Zidan', 'Zidan', 'Muhammad', '2021-06-18 10:42:07', '2021-07-13 04:41:59'),
-(12, 'test1@gmail.com', '089987765543', 0, 'male', '0000-00-00', '$2b$10$gkIsxy2.QSlbhqGDd3l9/eY3Jz5JXMFqrus3xjygvqC6Mbf5bU6QK', 'image-1624621771036.jpg', 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Hello hehe', 'Test1', 'One', '2021-06-24 11:54:00', '2021-06-25 11:51:11'),
-(13, 'exp@gmail.com', '123456789100', 0, 'male', '0000-00-00', '$2b$10$UaBP4Tl36Qbq0f/vCWlqseT5MnNRlpxI8VmASZY.bxpMZY.FzxqF2', 'image-1624587765458.jpg', 'Ngendi Bae', 'EXP', 'exp', 'yeye', '2021-06-25 02:21:58', '2021-06-25 02:22:45'),
-(14, 'contoh@aja.com', '098098098098', 0, 'male', '0000-00-00', '$2b$10$XmSTjCT.sKtIqJD9WbqUyeN9eCDYM1yWy0EpjnaN5Up0kWZHTENYm', 'image-1624850836622.jpg', 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Contoh', 'satu', 'dua', '2021-06-28 03:24:47', '2021-06-28 03:27:16'),
-(17, 'exp@exp.exp', '089089876876', 0, 'male', '0000-00-00', '$2b$10$ZJvcsccuSmn7SuCT8OmgpOUy6eawWYrJ9PZiuSPp9wI7IoF6cmOiy', 'image-1624861573015.jpg', 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Example12', 'example', '12', '2021-06-28 06:25:17', '2021-06-28 06:26:13'),
-(18, 'example@yahoo.com', '098098098089', 0, 'male', '0000-00-00', '$2b$10$vy8Yo/NNLDrLXWhSSvQnQe3GQKLYu87EKdvnld96M32UakesGSCp2', NULL, NULL, NULL, NULL, NULL, '2021-06-28 06:53:55', NULL),
-(19, 'example@yahooo.com', '098098098098', 0, 'male', '0000-00-00', '$2b$10$oY/Lwc16/qI4wV8jmy2hTOa7Q0sAjMGOj.QtM7xjIbRgijC1Tmvy6', 'image-1624863447907.jpg', 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'contoh', '1', '2', '2021-06-28 06:55:33', '2021-06-28 06:57:27'),
-(20, 'zidan.muh69@gmail.com', '0895358663671', 0, 'male', '2021-07-18', '$2b$10$zx2OfyQGyaULTRXh1anpee7MjH1UlPIEx6cmiCC8zFaTTCe8NeT9q', 'image-1626152914509.jpg', 'Jl Gn Sahari Ruko Marina Mangga Dua Bl F/1,Gunung Sahari Utara', 'Muhammad', NULL, NULL, '2021-07-08 14:11:40', '2021-07-13 05:08:34'),
-(21, 'gudang@garam.com', '089765432109', 0, 'male', '0000-00-00', '$2b$10$VClv7pUsZCY15E0TmDnnzOFlt1Tn5PZhV8v1TQB5HIt0Bd0KG4682', NULL, NULL, NULL, NULL, NULL, '2021-07-12 16:52:46', NULL);
+(1, 'example@admin.com', '087898789878', 1, 'male', '0000-00-00', '$2b$10$5txtT4eu7FmOi54FLUjHluqEE7kbjrLuE2fMiT.DZszTw6DdNxH1.', 'image-1624527210528.png', 'Rumah Jauh', 'Admin', NULL, NULL, '2021-06-14 12:54:41', '2021-08-18 08:16:58'),
+(11, 'zidan.muh88@gmail.co.id', '0895358663696', 0, 'male', '2001-12-21', '$2b$10$jYcrfbCkSXabbwrnyNRWNOnA9T3/b/FtCAtNaV9R64EqgSD5yoXPS', 'image-1627445347355.jpg', 'Komplek Rukan Graha Cempaka Mas C 2 / 14, Jl. Letjend. Suprapto (Cempaka Mas Timur), Jakarta Pusat', 'Zidan Rizky', 'Zidan', 'Muhammad', '2021-06-18 10:42:07', '2021-08-18 08:17:35'),
+(20, 'zidan.muh69@gmail.com', '0895358663671', 1, 'male', '2001-12-13', '$2b$10$PFNPe.QqoLDRPqzLXf8tie2oJMZSSjHLaVkqCB83aycdLpj3Dl6jO', 'image-1632304676141.jpg', 'Jl Gn Sahari Ruko Marina Mangga Dua Bl F/1,Gunung Sahari Utara', 'Muhammad Rizky Ramadhan', 'Muhammad', 'Zidan', '2021-07-08 14:11:40', '2021-09-22 09:57:56'),
+(21, 'zidan.muh40@gmail.com', '087898789878', 0, 'male', '2001-12-13', '$2b$10$FNkjw2hiBnMBGG8X2c6syuLzEV84sRvPoFPohcVSXu2mtExc6x4aG', 'image-1631675499755.jpg', 'null', 'Zidan Muhammad', NULL, NULL, '2021-08-15 12:09:13', '2021-09-15 03:11:39'),
+(40, 'indihome@mail.com', '089890009809', 0, 'male', '0000-00-00', '$2b$10$OyW4wymKHYM1JrtRq0GYtOt221bayZiGDkzYjZ.ajfiKA4ciM9j7S', NULL, NULL, 'User', NULL, NULL, '2021-09-22 07:42:38', '2021-09-22 07:43:01');
 
 -- --------------------------------------------------------
 
@@ -337,6 +305,12 @@ INSERT INTO `variants` (`id`, `name_variant`) VALUES
 -- Indeks untuk tabel `categories`
 --
 ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `chats`
+--
+ALTER TABLE `chats`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -389,7 +363,13 @@ ALTER TABLE `variants`
 -- AUTO_INCREMENT untuk tabel `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `chats`
+--
+ALTER TABLE `chats`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `items`
@@ -413,19 +393,19 @@ ALTER TABLE `items_variants`
 -- AUTO_INCREMENT untuk tabel `item_transactions`
 --
 ALTER TABLE `item_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT untuk tabel `variants`
