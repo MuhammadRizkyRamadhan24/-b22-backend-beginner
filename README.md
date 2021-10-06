@@ -19,7 +19,7 @@
 2. Start XAMPP
 3. Database configuration:
     * Open http://localhost/phpmyadmin in the browser
-    * Import database, select `coffee-shop.sql` file from project folder
+    * Import database, select `barely-coffee-shop.sql` file from project folder
 4. Setting file .env:
     ```
     APP_URL=http://localhost:8880 //app url access
@@ -56,7 +56,7 @@
 - [Bcrypt](https://github.com/kelektiv/node.bcrypt.js) - Password Hashing
 
 ## Author
-- [Muhammad Rizky Ramadhan](https://www.linkedin.com/in/muhammad-rizky-ramadhan-258a8b194/)
+- [Muhammad Rizky Ramadhan](https://www.linkedin.com/in/zzzzidannnn/)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/MuhammadRizkyRamadhan24/b22-backend-beginner/blob/master/LICENSE) file for details
