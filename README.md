@@ -60,5 +60,3 @@
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/MuhammadRizkyRamadhan24/b22-backend-beginner/blob/master/LICENSE) file for details
-
-Thanks to [Daniel Saputra](https://www.linkedin.com/in/danielwetan/) for the readme layout.
